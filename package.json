@@ -1,0 +1,62 @@
+{
+  "name": "class-components",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "npm run format && vite",
+    "build": "npm run format && vite build",
+    "format": "npm run pret && npm run check && npm run lint && npm run stylelint:fix && npm run stylelint",
+    "lint": "eslint .",
+    "pret": "prettier --write .",
+    "check": "prettier --check .",
+    "stylelint": "stylelint '**/*.{css,scss}'",
+    "stylelint:fix": "stylelint '**/*.{css,scss}' --fix",
+    "lint-staged": "lint-staged",
+    "prepare": "husky ./.husky"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "eslint": "^9.30.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-compiler": "^19.0.0-beta-af1b7da-20250417",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "sass": "^1.87.0",
+    "prettier": "3.6.2",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.35.1",
+    "vite": "^7.0.4",
+    "stylelint": "^16.16.0",
+    "stylelint-config-clean-order": "^7.0.0",
+    "stylelint-config-recommended-scss": "^14.1.0",
+    "stylelint-config-standard": "^37.0.0",
+    "stylelint-config-standard-scss": "^14.0.0",
+    "stylelint-scss": "^6.11.1",
+    "lint-staged": "^15.2.10"
+  },
+  "lint-staged": {
+    "*src/**/*.{js,ts}": [
+      "npm run pret",
+      "npm run check",
+      "npm run lint"
+    ],
+    "src/**/*.{scss,css}": [
+      "npm run pret",
+      "npm run check",
+      "npm run stylelint",
+      "npm run stylelint:fix"
+    ]
+  }
+}
