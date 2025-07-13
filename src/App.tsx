@@ -1,9 +1,10 @@
 import { Component } from 'react';
-import Search from './components/Search';
-import CardList from './components/CardList';
-import Spinner from './components/Spinner';
-import { type Book } from './types';
-import { getStoredSearchTerm, saveSearchTerm } from './utils';
+
+import CardList from '@components/CardList';
+import Spinner from '@components/Spinner';
+import Search from '@components/Search';
+import { type Book } from '@/types';
+import { getStoredSearchTerm, saveSearchTerm } from '@utils/utils';
 import './App.scss';
 
 const API_BASE = 'https://stapi.co/api/v2/rest/book/search';

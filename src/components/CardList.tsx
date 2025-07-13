@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import Card from './Card';
-import { type Book } from '../types';
+import Card from '@components/Card';
+import { type Book } from '@/types';
 
 interface Props {
   books: Book[];

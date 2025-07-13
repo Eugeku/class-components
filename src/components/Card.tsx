@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { type Book } from '../types';
+import { type Book } from '@/types';
 import './Card.scss';
 
 export default class Card extends Component<{ book: Book }> {
