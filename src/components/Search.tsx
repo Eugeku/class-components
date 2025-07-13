@@ -5,6 +5,7 @@ interface Props {
   value: string;
   onChange: (val: string) => void;
   onSearch: () => void;
+  onThrow: () => void;
 }
 
 export default class Search extends Component<Props> {
@@ -22,6 +23,9 @@ export default class Search extends Component<Props> {
         />
         <button className="search-button" onClick={this.props.onSearch}>
           Search
+        </button>
+        <button className="error-button" onClick={this.props.onThrow}>
+          Throw Error
         </button>
       </div>
     );

@@ -4,6 +4,7 @@ import CardList from './components/CardList';
 import Spinner from './components/Spinner';
 import { type Book } from './types';
 import { getStoredSearchTerm, saveSearchTerm } from './utils';
+import './App.scss';
 
 const API_BASE = 'https://stapi.co/api/v2/rest/book/search';
 
@@ -12,6 +13,7 @@ interface State {
   books: Book[];
   loading: boolean;
   errorMsg: string;
+  simulateError: boolean;
 }
 
 export default class App extends Component {
@@ -20,10 +22,17 @@ export default class App extends Component {
     books: [],
     loading: false,
     errorMsg: '',
+    simulateError: false,
   };
 
   componentDidMount() {
     this.fetchBooks(this.state.input);
+  }
+
+  componentDidUpdate(prevState: State) {
+    if (this.state.simulateError && !prevState.simulateError) {
+      throw new Error('Simulated error');
+    }
   }
 
   fetchBooks(term: string) {
@@ -82,10 +91,11 @@ export default class App extends Component {
           value={input}
           onChange={this.handleInputChange}
           onSearch={this.handleSearch}
+          onThrow={this.triggerError}
         />
-        <div style={{ padding: '1rem' }}>
+        <div className="card-list">
           {loading && <Spinner />}
-          {errorMsg && <div style={{ color: 'red' }}>Error: {errorMsg}</div>}
+          {errorMsg && <div className="api-error">Error: {errorMsg}</div>}
           {!loading && <CardList books={books} />}
         </div>
       </>
