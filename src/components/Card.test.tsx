@@ -1,4 +1,3 @@
-
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Card from './Card';
@@ -30,7 +29,7 @@ describe('Card component', () => {
           ...mockBook,
           audiobook: false,
         }}
-      />,
+      />
     );
 
     expect(screen.getByText('Audiobook: No')).toBeInTheDocument();
@@ -43,7 +42,7 @@ describe('Card component', () => {
           ...mockBook,
           audiobook: true,
         }}
-      />,
+      />
     );
 
     expect(screen.getByText('Audiobook: Yes')).toBeInTheDocument();
