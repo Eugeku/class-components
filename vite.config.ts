@@ -13,15 +13,14 @@ export default defineConfig({
     globals: true,
     setupFiles: './src/setupTests.ts',
     coverage: {
+      provider: 'v8',
       reporter: ['text', 'json', 'html'],
       thresholds: {
-        global: {
           statements: 80,
           branches: 50,
           functions: 50,
           lines: 50,
         },
-      },
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       exclude: [
         'src/**/*.test.{js,jsx,ts,tsx}',
