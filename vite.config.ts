@@ -5,11 +5,12 @@ import { configDefaults } from 'vitest/config';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tsconfigPaths() ],
+  plugins: [react(), tsconfigPaths()],
 
   test: {
     ...configDefaults,
     environment: 'jsdom',
+    globals: true,
     setupFiles: './src/setupTests.ts',
     coverage: {
       reporter: ['text', 'json', 'html'],
@@ -27,8 +28,8 @@ export default defineConfig({
         'src/**/*.spec.{js,jsx,ts,tsx}',
         'src/index.{js,jsx,ts,tsx}',
         'src/setupTests.{js,ts}',
-        'src/**/*.d.ts'
-      ]
+        'src/**/*.d.ts',
+      ],
     },
   },
 });
