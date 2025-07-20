@@ -30,7 +30,9 @@ describe('Search component', () => {
       />
     );
 
-    const input = screen.getByPlaceholderText('Search books...') as HTMLInputElement;
+    const input = screen.getByPlaceholderText(
+      'Search books...'
+    ) as HTMLInputElement;
     expect(input.value).toBe('Test value');
   });
 
