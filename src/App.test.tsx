@@ -10,8 +10,8 @@ import {
 } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from './App';
-import type { Book } from './types';
+import App from '@/App';
+import type { Book } from '@/types';
 
 vi.mock('@components/CardList', () => {
   interface Props {
