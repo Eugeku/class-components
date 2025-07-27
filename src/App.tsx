@@ -65,15 +65,15 @@ const App: React.FC = () => {
       });
   };
 
-const handlePageChange = (page: number) => {
-  const shouldPaginate = books.length > itemsPerPage;
+  const handlePageChange = (page: number) => {
+    const shouldPaginate = books.length > itemsPerPage;
 
-  if (!shouldPaginate || page === 1) {
-    setSearchParams({});
-  } else {
-    setSearchParams({ page: String(page) });
-  }
-};
+    if (!shouldPaginate || page === 1) {
+      setSearchParams({});
+    } else {
+      setSearchParams({ page: String(page) });
+    }
+  };
 
   const handleInputChange = (value: string) => {
     setInput(value);

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from '@/App';
+import AppRoutes from '@/AppRoutes';
 import ErrorBoundary from '@components/ErrorBoundary';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ if (rootEl) {
     <React.StrictMode>
       <BrowserRouter>
         <ErrorBoundary>
-          <App />
+          <AppRoutes />
         </ErrorBoundary>
       </BrowserRouter>
     </React.StrictMode>
