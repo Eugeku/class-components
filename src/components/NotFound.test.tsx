@@ -13,11 +13,15 @@ describe('NotFound component', () => {
   });
 
   it('renders the 404 heading', () => {
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('404 – Page Not Found');
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(
+      '404 – Page Not Found'
+    );
   });
 
   it('renders the explanatory paragraph', () => {
-    expect(screen.getByText('The page you are looking for does not exist.')).toBeInTheDocument();
+    expect(
+      screen.getByText('The page you are looking for does not exist.')
+    ).toBeInTheDocument();
   });
 
   it('renders a link back to homepage with correct href', () => {
