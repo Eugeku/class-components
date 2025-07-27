@@ -5,6 +5,8 @@ import Spinner from '@components/Spinner';
 import Search from '@components/Search';
 import { type Book } from '@/types';
 import useLocalStorage from '@utils/utils';
+import Pagination from '@components/Pagination';
+import { useSearchParams } from 'react-router-dom';
 import './App.scss';
 
 const API_BASE = 'https://stapi.co/api/v2/rest/book/search';
@@ -15,6 +17,9 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [simulateError, setSimulateError] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = parseInt(searchParams.get('page') || '1', 10);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     if (simulateError) {
@@ -60,9 +65,20 @@ const App: React.FC = () => {
       });
   };
 
+  const handlePageChange = (page: number) => {
+    setSearchParams({ page: String(page) });
+  };
+
   const handleInputChange = (value: string) => {
     setInput(value);
+    handlePageChange(1);
   };
+
+  const totalPages = Math.ceil(books.length / itemsPerPage);
+  const paginatedBooks = books.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const handleSearch = () => {
     const clean = input.trim();
@@ -85,7 +101,14 @@ const App: React.FC = () => {
       <div className="card-list">
         {loading && <Spinner />}
         {errorMsg && <div className="api-error">Error: {errorMsg}</div>}
-        {!loading && <CardList books={books} />}
+        {!loading && <CardList books={paginatedBooks} />}
+        {!loading && books.length > itemsPerPage && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        )}
       </div>
     </>
   );
