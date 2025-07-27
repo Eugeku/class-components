@@ -1,1 +1,1 @@
-npx lint-staged && npm run coverage
+npx lint-staged

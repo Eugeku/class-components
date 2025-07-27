@@ -116,7 +116,7 @@ describe('App component', () => {
     act(() => {
       const input = screen.getByTestId('search-input');
       userEvent.type(input, 'test');
-    })
+    });
 
     await waitFor(() => {
       expect(screen.getByText(/API Error: 400/)).toBeInTheDocument();
