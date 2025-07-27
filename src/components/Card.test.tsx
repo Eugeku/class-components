@@ -5,6 +5,7 @@ import type { Book } from '@/types';
 
 describe('Card component', () => {
   const mockBook: Book = {
+    uid: 1,
     title: 'Test Book',
     publishedYear: 2022,
     publishedMonth: 10,

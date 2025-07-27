@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import ErrorBoundary from '@components/ErrorBoundary';
 
-describe('ErrorBoundary', () => {
+describe('ErrorBoundary component', () => {
   const ErrorComponent = () => {
     throw new Error('Test error');
   };

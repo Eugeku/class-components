@@ -1,7 +1,29 @@
-.card-list {
-  padding: 1rem;
+.main-view {
+  display: flex;
+  flex-direction: row;
 
-  .api-error {
-    color: red;
+  .card-list {
+    width: -webkit-fill-available;
+    padding: 1rem;
+
+    .api-error {
+      color: red;
+    }
+  }
+
+  &.split-view {
+    .card-list {
+      width: 60%;
+    }
+
+    .details-pane {
+      width: 40%;
+      padding: 1rem;
+      border-left: 1px solid #ccc;
+
+      .api-error {
+        color: red;
+      }
+    }
   }
 }
