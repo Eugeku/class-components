@@ -1,4 +1,5 @@
 import React, { act } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import {
   describe,
   it,
@@ -77,7 +78,11 @@ describe('App component', () => {
   });
 
   it('shows spinner during loading and hides after fetch', async () => {
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
     await waitFor(() => {
       expect(screen.queryByTestId('spinner')).not.toBeInTheDocument();
@@ -85,7 +90,11 @@ describe('App component', () => {
   });
 
   it('fetches and displays books after search', async () => {
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
     const input = screen.getByTestId('search-input');
     await userEvent.type(input, 'test');
     await userEvent.click(screen.getByText('Search'));
@@ -97,7 +106,11 @@ describe('App component', () => {
 
   it('saves trimmed input to localStorage on search', async () => {
     const setItem = vi.spyOn(Storage.prototype, 'setItem');
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
     const input = screen.getByTestId('search-input');
     await userEvent.type(input, '  trek  ');
     await userEvent.click(screen.getByText('Search'));
@@ -112,7 +125,11 @@ describe('App component', () => {
       Promise.resolve({ ok: false, status: 400 })
     );
 
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
     act(() => {
       const input = screen.getByTestId('search-input');
       userEvent.type(input, 'test');
@@ -137,9 +154,11 @@ describe('App component', () => {
     };
 
     const { getByText } = render(
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
+      <MemoryRouter>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </MemoryRouter>
     );
 
     expect(() => {
