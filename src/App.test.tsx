@@ -16,7 +16,7 @@ import type { Book } from '@/types';
 vi.mock('@components/CardList', () => {
   type Props = {
     books: Array<Book>;
-  }
+  };
   return {
     default: ({ books }: Props) => (
       <div data-testid="card-list">{books.length} books</div>
@@ -33,7 +33,7 @@ type SearchProps = {
   onChange: (val: string) => void;
   onSearch: () => void;
   onThrow: () => void;
-}
+};
 
 vi.mock('@components/Search', async () => {
   return {

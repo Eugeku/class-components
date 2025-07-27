@@ -3,10 +3,10 @@ import './ErrorBoundary.scss';
 
 type Props = {
   children: ReactNode;
-}
+};
 type State = {
   hasError: boolean;
-}
+};
 
 export default class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false };
