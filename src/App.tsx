@@ -4,13 +4,13 @@ import CardList from '@components/CardList';
 import Spinner from '@components/Spinner';
 import Search from '@components/Search';
 import { type Book } from '@/types';
-import { getStoredSearchTerm, saveSearchTerm } from '@utils/utils';
+import useLocalStorage from '@utils/utils';
 import './App.scss';
 
 const API_BASE = 'https://stapi.co/api/v2/rest/book/search';
 
 const App: React.FC = () => {
-  const [input, setInput] = useState(getStoredSearchTerm());
+  const [input, setInput] = useLocalStorage('searchTerm', '');
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -67,7 +67,6 @@ const App: React.FC = () => {
   const handleSearch = () => {
     const clean = input.trim();
     setInput(clean);
-    saveSearchTerm(clean);
     fetchBooks(clean);
   };
 
