@@ -4,7 +4,7 @@ import { type Book } from '@/types';
 
 type Props = {
   books: Book[];
-}
+};
 
 const CardList: React.FC<Props> = ({ books }) => {
   return (

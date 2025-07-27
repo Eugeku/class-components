@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import CardList from '@components/CardList';
 import Spinner from '@components/Spinner';
@@ -9,35 +9,26 @@ import './App.scss';
 
 const API_BASE = 'https://stapi.co/api/v2/rest/book/search';
 
-interface State {
-  input: string;
-  books: Book[];
-  loading: boolean;
-  errorMsg: string;
-  simulateError: boolean;
-}
+const App: React.FC = () => {
+  const [input, setInput] = useState(getStoredSearchTerm());
+  const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [simulateError, setSimulateError] = useState(false);
 
-export default class App extends Component {
-  state: State = {
-    input: getStoredSearchTerm(),
-    books: [],
-    loading: false,
-    errorMsg: '',
-    simulateError: false,
-  };
-
-  componentDidMount() {
-    this.fetchBooks(this.state.input);
-  }
-
-  componentDidUpdate(prevState: State) {
-    if (this.state.simulateError && !prevState.simulateError) {
+  useEffect(() => {
+    if (simulateError) {
       throw new Error('Simulated error');
     }
-  }
+  }, [simulateError]);
 
-  fetchBooks(term: string) {
-    this.setState({ loading: true, errorMsg: '' });
+  useEffect(() => {
+    fetchBooks(input);
+  }, []);
+
+  const fetchBooks = (term: string) => {
+    setLoading(true);
+    setErrorMsg('');
 
     const body = new URLSearchParams();
     if (term.trim()) {
@@ -58,48 +49,47 @@ export default class App extends Component {
         return res.json();
       })
       .then((data) => {
-        this.setState({ books: data.books || [] });
+        setBooks(data.books || []);
       })
       .catch((error: Error) => {
-        this.setState({ errorMsg: error.message, books: [] });
+        setErrorMsg(error.message);
+        setBooks([]);
       })
       .finally(() => {
-        this.setState({ loading: false });
+        setLoading(false);
       });
-  }
-
-  handleInputChange = (value: string) => {
-    this.setState({ input: value });
   };
 
-  handleSearch = () => {
-    const clean = this.state.input.trim();
-    this.setState({ input: clean });
+  const handleInputChange = (value: string) => {
+    setInput(value);
+  };
+
+  const handleSearch = () => {
+    const clean = input.trim();
+    setInput(clean);
     saveSearchTerm(clean);
-    this.fetchBooks(clean);
+    fetchBooks(clean);
   };
 
-  triggerError = () => {
-    this.setState({ simulateError: true });
+  const triggerError = () => {
+    setSimulateError(true);
   };
 
-  render() {
-    const { input, books, loading, errorMsg } = this.state;
+  return (
+    <>
+      <Search
+        value={input}
+        onChange={handleInputChange}
+        onSearch={handleSearch}
+        onThrow={triggerError}
+      />
+      <div className="card-list">
+        {loading && <Spinner />}
+        {errorMsg && <div className="api-error">Error: {errorMsg}</div>}
+        {!loading && <CardList books={books} />}
+      </div>
+    </>
+  );
+};
 
-    return (
-      <>
-        <Search
-          value={input}
-          onChange={this.handleInputChange}
-          onSearch={this.handleSearch}
-          onThrow={this.triggerError}
-        />
-        <div className="card-list">
-          {loading && <Spinner />}
-          {errorMsg && <div className="api-error">Error: {errorMsg}</div>}
-          {!loading && <CardList books={books} />}
-        </div>
-      </>
-    );
-  }
-}
+export default App;

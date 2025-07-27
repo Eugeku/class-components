@@ -14,7 +14,7 @@ import App from '@/App';
 import type { Book } from '@/types';
 
 vi.mock('@components/CardList', () => {
-  interface Props {
+  type Props = {
     books: Array<Book>;
   }
   return {
@@ -28,7 +28,7 @@ vi.mock('@components/Spinner', () => ({
   default: () => <div data-testid="spinner">Loading...</div>,
 }));
 
-interface SearchProps {
+type SearchProps = {
   value: string;
   onChange: (val: string) => void;
   onSearch: () => void;

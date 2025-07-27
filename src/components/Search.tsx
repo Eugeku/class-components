@@ -6,7 +6,7 @@ type Props = {
   onChange: (val: string) => void;
   onSearch: () => void;
   onThrow: () => void;
-}
+};
 
 const Search: React.FC<Props> = ({ value, onChange, onSearch, onThrow }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
