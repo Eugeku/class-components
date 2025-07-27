@@ -28,7 +28,7 @@ const App: React.FC = () => {
   }, [simulateError]);
 
   useEffect(() => {
-    fetchBooks(input);
+    fetchBooks('');
   }, []);
 
   const fetchBooks = (term: string) => {
@@ -65,9 +65,15 @@ const App: React.FC = () => {
       });
   };
 
-  const handlePageChange = (page: number) => {
+const handlePageChange = (page: number) => {
+  const shouldPaginate = books.length > itemsPerPage;
+
+  if (!shouldPaginate || page === 1) {
+    setSearchParams({});
+  } else {
     setSearchParams({ page: String(page) });
-  };
+  }
+};
 
   const handleInputChange = (value: string) => {
     setInput(value);
