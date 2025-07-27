@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import CardList from '@components/CardList';
+import CardList from './CardList';
 import type { Book } from '@/types';
 
 vi.mock('@components/Card', () => ({
@@ -12,6 +12,7 @@ vi.mock('@components/Card', () => ({
 describe('CardList component', () => {
   const books: Book[] = [
     {
+      uid: 1,
       title: 'Book One',
       publishedYear: 2021,
       publishedMonth: 5,
@@ -19,6 +20,7 @@ describe('CardList component', () => {
       audiobook: true,
     },
     {
+      uid: 2,
       title: 'Book Two',
       publishedYear: 2020,
       publishedMonth: 6,

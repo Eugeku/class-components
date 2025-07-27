@@ -1,24 +1,40 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getStoredSearchTerm, saveSearchTerm } from '@utils/utils';
+import { renderHook, act } from '@testing-library/react';
+import useLocalStorage from '@utils/utils';
 
-describe('storage utils', () => {
+describe('useLocalStorage hook', () => {
   beforeEach(() => {
     localStorage.clear();
   });
 
   it('returns empty string if nothing is saved', () => {
-    expect(getStoredSearchTerm()).toBe('');
+    const { result } = renderHook(() => useLocalStorage('searchTerm', ''));
+
+    expect(result.current[0]).toBe('');
   });
 
-  it('saves and retrieves the search term', () => {
-    saveSearchTerm('react');
+  it('saves and retrieves the search ter', () => {
+    const { result } = renderHook(() => useLocalStorage('searchTerm', ''));
+
+    act(() => {
+      result.current[1]('react');
+    });
+
     expect(localStorage.getItem('searchTerm')).toBe('react');
-    expect(getStoredSearchTerm()).toBe('react');
+    expect(result.current[0]).toBe('react');
   });
 
   it('overwrites previous value', () => {
-    saveSearchTerm('vite');
-    saveSearchTerm('vitest');
-    expect(getStoredSearchTerm()).toBe('vitest');
+    const { result } = renderHook(() => useLocalStorage('searchTerm', ''));
+
+    act(() => {
+      result.current[1]('vite');
+    });
+    act(() => {
+      result.current[1]('vitest');
+    });
+
+    expect(localStorage.getItem('searchTerm')).toBe('vitest');
+    expect(result.current[0]).toBe('vitest');
   });
 });

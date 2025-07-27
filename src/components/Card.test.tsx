@@ -1,10 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import Card from '@components/Card';
+import Card from './Card';
 import type { Book } from '@/types';
 
 describe('Card component', () => {
   const mockBook: Book = {
+    uid: 1,
     title: 'Test Book',
     publishedYear: 2022,
     publishedMonth: 10,

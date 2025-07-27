@@ -1,48 +1,45 @@
-import { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import CardList from '@components/CardList';
 import Spinner from '@components/Spinner';
 import Search from '@components/Search';
+import Pagination from '@components/Pagination';
+import BookDetails from '@components/BookDetails';
+import Navigation from '@components/Navigation';
+import useLocalStorage from '@utils/utils';
 import { type Book } from '@/types';
-import { getStoredSearchTerm, saveSearchTerm } from '@utils/utils';
+
 import './App.scss';
 
 const API_BASE = 'https://stapi.co/api/v2/rest/book/search';
 
-interface State {
-  input: string;
-  books: Book[];
-  loading: boolean;
-  errorMsg: string;
-  simulateError: boolean;
-}
+const App: React.FC = () => {
+  const [input, setInput] = useLocalStorage('searchTerm', '');
+  const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [simulateError, setSimulateError] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-export default class App extends Component {
-  state: State = {
-    input: getStoredSearchTerm(),
-    books: [],
-    loading: false,
-    errorMsg: '',
-    simulateError: false,
-  };
+  const currentPage = parseInt(searchParams.get('page') || '1', 10);
+  const selectedId = searchParams.get('details') || null;
+  const itemsPerPage = 10;
 
-  componentDidMount() {
-    this.fetchBooks(this.state.input);
-  }
+  useEffect(() => {
+    if (simulateError) throw new Error('Simulated error');
+  }, [simulateError]);
 
-  componentDidUpdate(prevState: State) {
-    if (this.state.simulateError && !prevState.simulateError) {
-      throw new Error('Simulated error');
-    }
-  }
+  useEffect(() => {
+    fetchBooks('');
+  }, []);
 
-  fetchBooks(term: string) {
-    this.setState({ loading: true, errorMsg: '' });
+  const fetchBooks = (term: string) => {
+    setLoading(true);
+    setErrorMsg('');
 
     const body = new URLSearchParams();
-    if (term.trim()) {
-      body.append('title', term.trim());
-    }
+    if (term.trim()) body.append('title', term.trim());
 
     fetch(API_BASE, {
       method: 'POST',
@@ -52,54 +49,93 @@ export default class App extends Component {
       body,
     })
       .then((res) => {
-        if (!res.ok) {
-          throw new Error(`API Error: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`API Error: ${res.status}`);
         return res.json();
       })
       .then((data) => {
-        this.setState({ books: data.books || [] });
+        setBooks(data.books || []);
       })
       .catch((error: Error) => {
-        this.setState({ errorMsg: error.message, books: [] });
+        setErrorMsg(error.message);
+        setBooks([]);
       })
       .finally(() => {
-        this.setState({ loading: false });
+        setLoading(false);
       });
-  }
-
-  handleInputChange = (value: string) => {
-    this.setState({ input: value });
   };
 
-  handleSearch = () => {
-    const clean = this.state.input.trim();
-    this.setState({ input: clean });
-    saveSearchTerm(clean);
-    this.fetchBooks(clean);
+  const handleSearch = () => {
+    const clean = input.trim();
+    setInput(clean);
+    fetchBooks(clean);
   };
 
-  triggerError = () => {
-    this.setState({ simulateError: true });
+  const handleInputChange = (value: string) => {
+    setInput(value);
+    updateSearchParams(1, null);
   };
 
-  render() {
-    const { input, books, loading, errorMsg } = this.state;
+  const handlePageChange = (page: number) => {
+    updateSearchParams(page, selectedId);
+  };
 
-    return (
-      <>
-        <Search
-          value={input}
-          onChange={this.handleInputChange}
-          onSearch={this.handleSearch}
-          onThrow={this.triggerError}
-        />
+  const handleSelectItem = (id: string) => {
+    updateSearchParams(currentPage, id);
+  };
+
+  const handleCloseDetails = () => {
+    updateSearchParams(currentPage, null);
+  };
+
+  const updateSearchParams = (page: number, details: string | null) => {
+    const params: Record<string, string> = {};
+    if (books.length > itemsPerPage && page > 1) {
+      params.page = String(page);
+    }
+    if (details) {
+      params.details = details;
+    }
+    setSearchParams(params);
+  };
+
+  const totalPages = Math.ceil(books.length / itemsPerPage);
+  const paginatedBooks = books.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  return (
+    <>
+      <Navigation />
+      <Search
+        value={input}
+        onChange={handleInputChange}
+        onSearch={handleSearch}
+        onThrow={() => setSimulateError(true)}
+      />
+      <div className={`main-view ${selectedId ? 'split-view' : ''}`}>
         <div className="card-list">
           {loading && <Spinner />}
           {errorMsg && <div className="api-error">Error: {errorMsg}</div>}
-          {!loading && <CardList books={books} />}
+          {!loading && (
+            <CardList books={paginatedBooks} onSelectItem={handleSelectItem} />
+          )}
+          {!loading && books.length > itemsPerPage && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
-      </>
-    );
-  }
-}
+        {selectedId && (
+          <div className="details-pane">
+            <BookDetails id={selectedId} onClose={handleCloseDetails} />
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
+
+export default App;

@@ -1,19 +1,24 @@
-import { Component } from 'react';
+import React from 'react';
 import Card from '@components/Card';
 import { type Book } from '@/types';
 
-interface Props {
+type Props = {
   books: Book[];
-}
+  onSelectItem?: (id: string) => void;
+};
 
-export default class CardList extends Component<Props> {
-  render() {
-    return (
-      <>
-        {this.props.books.map((p) => (
-          <Card key={p.title} book={p} />
-        ))}
-      </>
-    );
-  }
-}
+const CardList: React.FC<Props> = ({ books, onSelectItem }) => {
+  return (
+    <>
+      {books.map((book) => (
+        <Card
+          key={book.title}
+          book={book}
+          onClick={() => onSelectItem?.(book.uid.toString())}
+        />
+      ))}
+    </>
+  );
+};
+
+export default CardList;

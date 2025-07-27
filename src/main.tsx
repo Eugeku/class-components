@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from '@/App';
+import AppRoutes from '@/AppRoutes';
 import ErrorBoundary from '@components/ErrorBoundary';
+import { BrowserRouter } from 'react-router-dom';
 
 const rootEl = document.getElementById('root');
 if (rootEl) {
   ReactDOM.createRoot(rootEl).render(
     <React.StrictMode>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
+      <BrowserRouter>
+        <ErrorBoundary>
+          <AppRoutes />
+        </ErrorBoundary>
+      </BrowserRouter>
     </React.StrictMode>
   );
 } else {
