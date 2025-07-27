@@ -1,0 +1,14 @@
+.navigation {
+  display: flex;
+  gap: 1rem;
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      cursor: pointer;
+      color: #928e8e;
+      text-decoration: underline;
+    }
+  }
+}

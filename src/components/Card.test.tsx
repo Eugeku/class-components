@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import Card from '@components/Card';
+import Card from './Card';
 import type { Book } from '@/types';
 
 describe('Card component', () => {

@@ -6,6 +6,7 @@ import Spinner from '@components/Spinner';
 import Search from '@components/Search';
 import Pagination from '@components/Pagination';
 import BookDetails from '@components/BookDetails';
+import Navigation from '@components/Navigation';
 import useLocalStorage from '@utils/utils';
 import { type Book } from '@/types';
 
@@ -105,6 +106,7 @@ const App: React.FC = () => {
 
   return (
     <>
+      <Navigation />
       <Search
         value={input}
         onChange={handleInputChange}
